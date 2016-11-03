@@ -57,8 +57,9 @@ public class GroupWisePlus extends Wise{
                 }
             }
         }
-
+        // 1.
         Collections.reverse(dgl);
+
         for (int i = 0; i < dgl.size(); i++) dgl.get(i).index = i;
         System.out.println("after preprocessing, there are "+ dgl.size()+ " points");
         System.out.println("skyline points (first layer) number: "+ dsg.get(0).size());
@@ -70,6 +71,7 @@ public class GroupWisePlus extends Wise{
 //        for (int i = 0; i < k; i++) {
 //            gskyline.add(new ArrayList<>());
 //        }
+        // 2.
         for (int i = 0; i < dgl.size(); i++) {
             HashSet<GraphPoint<TwoDim>> group = new HashSet<>();
             for (int j = i; j < dgl.size(); j++){
