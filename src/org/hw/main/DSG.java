@@ -24,12 +24,10 @@ public class DSG {
                 // 可以将线性搜索改成二分查找
                 for (int m = 0; m < i; m++) {
                     for (GraphPoint<TwoDim> gp : layers.get(m)) {
-                        if (isDominate(gp.p, p.p)) p.parents.add(gp);
-                    }
-                }
-                for (int m = i+1; m < layers.size(); m++) {
-                    for (GraphPoint<TwoDim> gp : layers.get(m)) {
-                        if (isDominate(p.p, gp.p)) p.children.add(gp);
+                        if (isDominate(gp.p, p.p)) {
+                            p.parents.add(gp);
+                            gp.children.add(p);
+                        }
                     }
                 }
             }
