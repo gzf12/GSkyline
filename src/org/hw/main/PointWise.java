@@ -15,16 +15,19 @@ public class PointWise extends Wise{
 
     @Override
     public ArrayList<ArrayList<GraphPoint<TwoDim>>> GSkyline(ArrayList<ArrayList<GraphPoint<TwoDim>>> dsg, int k) {
-        // preprogressing
+        // preprocessing
         ArrayList<ArrayList<GraphPoint<TwoDim>>> resultGroups = new ArrayList<>();
         int resultSize = 0;
 
-        ArrayList<GraphPoint<TwoDim>> dgl = new ArrayList<>();
+        ArrayList<GraphPoint<TwoDim>> dgl = new ArrayList<>();//prune DSG invalid points
         for (ArrayList<GraphPoint<TwoDim>> graphPoints : dsg) {
             for (GraphPoint<TwoDim> graphPoint : graphPoints) {
                 if (graphPoint.parents.size() + 1 > k) {
-                } else if (graphPoint.parents.size() + 1 == k) {
-//                    output(resultGroups, graphPoint);
+//                    dsg.remove(graphPoint);//because this point cannot be added to any G-skyline groups.
+                    continue;
+                } else if (graphPoint.parents.size() + 1 == k) {//find a group with exactly k points and is a unit group
+                    output(resultGroups, graphPoint);
+//                    dsg.remove(graphPoint);
                     resultSize++;
                 } else {
                     dgl.add(graphPoint);
@@ -86,12 +89,10 @@ public class PointWise extends Wise{
                 }
             }
         }
-//        resultGroups.addAll(gskyline.get(k-1));
+        resultGroups.addAll(gskyline.get(k-1));
         resultSize += gskyline.get(k-1).size();
         System.out.println("G-Skyline siez: " + resultSize);
         return resultGroups;
-
-
     }
 
     private static boolean isGSkyline(ArrayList<GraphPoint<TwoDim>> group, int gk){

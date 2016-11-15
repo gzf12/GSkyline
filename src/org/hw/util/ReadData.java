@@ -21,11 +21,14 @@ public class ReadData {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             float x, y;
+            int counter = 0;
             while((line = bufferedReader.readLine()) != null){
+                counter++;
                 String[] numstr = line.split(" ");
                 x = Float.valueOf(numstr[0]);
                 y = Float.valueOf(numstr[1]);
-                p.add(new TwoDim(x,y));
+                TwoDim tmp = new TwoDim(x,y,counter);
+                p.add(tmp);
 
             }
             bufferedReader.close();
