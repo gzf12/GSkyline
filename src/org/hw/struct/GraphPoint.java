@@ -17,4 +17,10 @@ public class GraphPoint<T> {
         this.p = p;
     }
 
+    @Override
+    public String toString() {
+        return "GraphPoint{" +
+                "p=" + p +
+                '}';
+    }
 }
