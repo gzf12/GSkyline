@@ -27,7 +27,7 @@ public class Layer2D {
             TwoDim pui = ps.get(i);
             // 6.- 8.
             if (!isDominate(tailPs.get(0),pui)){
-                ps.get(i).layer = 1;
+                pui.layer = 1;
                 tailPs.set(0,pui);
             } // 9. -11.
             else if (isDominate(tailPs.get(maxLayer - 1),pui)) {
