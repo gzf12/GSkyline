@@ -7,11 +7,9 @@ import org.hw.util.ReadData;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
-/**
- * Created by gzf on 2016/10/27.
- */
-public class GroupWise extends Wise{
+public class GroupWiseDepth extends Wise{
 
     public static void output(ArrayList<ArrayList<GraphPoint<TwoDim>>> resultGroups, GraphPoint<TwoDim> graphPoint){
         ArrayList<GraphPoint<TwoDim>> group = new ArrayList<>();
@@ -58,16 +56,6 @@ public class GroupWise extends Wise{
             }
         }
 
-//        Collections.reverse(dgl);
-//        dgl.sort(new Comparator<GraphPoint<TwoDim>>() {
-//            @Override
-//            public int compare(GraphPoint<TwoDim> o1, GraphPoint<TwoDim> o2) {
-//                if (o1.parents.size() > o2.parents.size()) return -1;
-//                else if (o1.parents.size() == o2.parents.size()) return 0;
-//                else return 1;
-//            }
-//        });
-
         for (int i = 0; i < dgl.size(); i++) dgl.get(i).index = i;
         System.out.println("after preprocessing, there are "+ dgl.size()+ " points");
         System.out.println("skyline points (first layer) number: "+ dsg.get(0).size());
@@ -76,54 +64,44 @@ public class GroupWise extends Wise{
 //        }
 
 
-        ArrayList<ArrayList<ArrayList<GraphPoint<TwoDim>>>> gskyline = new ArrayList<>(k+1);
-        HashSet<GraphPoint<TwoDim>> childrenSet ;
-        gskyline.add(new ArrayList<>());
-        for (GraphPoint<TwoDim> graphPoint : dgl) {
-            ArrayList<GraphPoint<TwoDim>> ugroup = new ArrayList<>();
-            ugroup.add(graphPoint);
-            gskyline.get(0).add(ugroup);
-        }
-        for (int i = 1; i < k; i++) {
-            gskyline.add(new ArrayList<>());
-            //3. group
-            ArrayList<ArrayList<GraphPoint<TwoDim>>> groups = gskyline.get(i - 1);
-            for (ArrayList<GraphPoint<TwoDim>> group : groups) {
-                //4. graph point
-                childrenSet = new HashSet<>();
-                for (GraphPoint<TwoDim> graphPoint : group) {
-                    //5.
+        HashSet<GraphPoint<TwoDim>> childrenSet = new HashSet<GraphPoint<TwoDim>>();
+        Stack<GraphPoint<TwoDim>> points = new Stack<GraphPoint<TwoDim>>();
+        
+        for (GraphPoint<TwoDim> firstLayerPoint : dgl) {
+			points.push(firstLayerPoint);
+			int tail = firstLayerPoint.index + 1;
+			while (points.size() != 0) {
+				childrenSet.clear();
+                for (GraphPoint<TwoDim> graphPoint : points) {
                     childrenSet.addAll(graphPoint.children);
                 }
-                // 6 - 14
-                int tail = 0;
-                if (group.size() > 0) tail = group.get(group.size()-1).index + 1;
 
                 for (int j = tail; j < dgl.size(); j++) {
-                    //7.- 10
                     GraphPoint<TwoDim> graphPoint = dgl.get(j);
-                    if (childrenSet.contains(graphPoint) ) continue;
+                    if (childrenSet.contains(graphPoint)) continue;
                     HashSet<GraphPoint<TwoDim>> newGroup = new HashSet<>();
-//                    ArrayList<GraphPoint<TwoDim>> newGroup = new ArrayList<>();
-                    newGroup.addAll(group);
-                    for (GraphPoint<TwoDim> point : group) {
+                    newGroup.addAll(points);
+                    for (GraphPoint<TwoDim> point : points) {
                         newGroup.addAll(point.parents);
                     }
                     newGroup.add(graphPoint);
                     newGroup.addAll(graphPoint.parents);
-                    if (newGroup.size() < k) {
-                        ArrayList<GraphPoint<TwoDim>> nextGroup = new ArrayList<>();
-                        nextGroup.addAll(group);
-                        nextGroup.add(graphPoint);
-                        gskyline.get(i).add(new ArrayList<>(nextGroup));
-                    }else if (newGroup.size() == k) {
-//                        output(resultGroups,newGroup);
-                        resultSize++;
-                    }
-
+                	if (newGroup.size() == k) {
+                		/*for (GraphPoint<TwoDim> GPoint : newGroup) {
+                    		System.out.print(GPoint.index + ",");
+            			}
+                    	System.out.print("||");*/
+						resultSize++;
+					} else if (newGroup.size() < k){
+						points.push(graphPoint);
+						childrenSet.addAll(graphPoint.children);
+					}
                 }
-            }
-        }
+                tail = points.lastElement().index + 1;
+                points.pop();
+			}
+		}
+        //System.out.println("");
         System.out.println("G-skyline size: " + resultSize);
         return resultGroups;
     }

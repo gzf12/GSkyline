@@ -161,6 +161,19 @@ public class GroupWisePlus extends Wise{
         }
 
         Collections.reverse(dgl);
+
+//        dgl.sort(new Comparator<GraphPoint<MultiDim>>() {
+//            @Override
+//            public int compare(GraphPoint<MultiDim> o1, GraphPoint<MultiDim> o2) {
+//                if (o1.p.layer > o2.p.layer) return -1;
+//                else if (o1.p.layer < o2.p.layer) return 1;
+//                else {
+//                    if (o1.parents.size() > o2.parents.size()) return -1;
+//                    else if (o1.parents.size() == o2.parents.size()) return 0;
+//                    else return 1;
+//                }
+//            }
+//        });
         for (int i = 0; i < dgl.size(); i++) dgl.get(i).index = i;
         System.out.println("after preprocessing, there are "+ dgl.size()+ " points");
         System.out.println("skyline points (first layer) number: "+ dsg.get(0).size());

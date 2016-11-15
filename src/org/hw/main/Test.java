@@ -14,9 +14,9 @@ public class Test {
     public static void main(String[] args) {
         String fileName = "anti_2.txt";
 
-        Wise wise = new GroupWisePlus();
+        Wise wise = new PointWise();
 
-        int k = 4;
+        int k = 3;
         boolean isOutput = false;
 
         test(fileName, wise, k, isOutput);
@@ -36,8 +36,10 @@ public class Test {
         long end = System.nanoTime();
         System.out.println("cost time: " + ((end-start)/1000));
         if (isOutput) {
+            int i = 0;
             System.out.println("------------");
             for (ArrayList<GraphPoint<TwoDim>> gskyline : gskylines) {
+                System.out.println(i++);
                 for (GraphPoint<TwoDim> graphPoint : gskyline) {
                     System.out.println(graphPoint.index + " # " + graphPoint.p.layer + " " + graphPoint.p.x + " " + graphPoint.p.y);
                 }

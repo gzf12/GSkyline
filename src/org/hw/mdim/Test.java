@@ -12,9 +12,9 @@ import java.util.ArrayList;
  */
 public class Test {
     public static void main(String[] args) {
-        String fileName = "inde_8.txt";
+        String fileName = "inde_6.txt";
 
-        Wise wise = new PointWise();
+        Wise wise = new GroupWisePlus();
 
         int k = 4;
         boolean isOutput = false;
